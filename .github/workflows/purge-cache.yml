@@ -1,35 +1,35 @@
-name: Purge jsDelivr CDN Cache
+﻿name: Purge jsDelivr CDN Cache
 
 on:
   push:
     paths:
-      - 'data/**'   # data/ ?�더??변경이 ?�을 ?�만 ?�행
+      - 'data/**'   # data/ 폴더에 변경이 있을 때만 실행
 
 jobs:
   purge-cache:
     runs-on: ubuntu-latest
     steps:
-      - name: Purge tier0_realtime_ranking.json
-        run: |
-          echo "Purging tier0_realtime_ranking.json..."
-          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-            "https://purge.jsdelivr.net/gh/cjswoaos777-source/utube-data@main/data/tier0_realtime_ranking.json")
-          if [ "$HTTP_STATUS" = "200" ]; then
-            echo "??tier0_realtime_ranking.json purge ?�공 (HTTP $HTTP_STATUS)"
-          else
-            echo "?�️ tier0_realtime_ranking.json purge ?�패 (HTTP $HTTP_STATUS) - 계속 진행"
-          fi
-
       - name: Purge dashboard_tier_channels.json.gz
         run: |
           echo "Purging dashboard_tier_channels.json.gz..."
           HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
             "https://purge.jsdelivr.net/gh/cjswoaos777-source/utube-data@main/data/dashboard_tier_channels.json.gz")
           if [ "$HTTP_STATUS" = "200" ]; then
-            echo "??dashboard_tier_channels.json.gz purge ?�공 (HTTP $HTTP_STATUS)"
+            echo "✅ dashboard_tier_channels.json.gz purge 성공 (HTTP $HTTP_STATUS)"
           else
-            echo "?�️ dashboard_tier_channels.json.gz purge ?�패 (HTTP $HTTP_STATUS) - 계속 진행"
+            echo "❌ dashboard_tier_channels.json.gz purge 실패 (HTTP $HTTP_STATUS) - 계속 진행"
+          fi
+
+      - name: Purge tier0_realtime_ranking.json
+        run: |
+          echo "Purging tier0_realtime_ranking.json..."
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            "https://purge.jsdelivr.net/gh/cjswoaos777-source/utube-data@main/data/tier0_realtime_ranking.json")
+          if [ "$HTTP_STATUS" = "200" ]; then
+            echo "✅ tier0_realtime_ranking.json purge 성공 (HTTP $HTTP_STATUS)"
+          else
+            echo "❌ tier0_realtime_ranking.json purge 실패 (HTTP $HTTP_STATUS) - 계속 진행"
           fi
 
       - name: Summary
-        run: echo "?�� jsDelivr 캐시 ?��? ?�료"
+        run: echo "🎉 jsDelivr 캐시 퍼지 완료"
